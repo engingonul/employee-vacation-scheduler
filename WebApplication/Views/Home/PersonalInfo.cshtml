@@ -1,0 +1,122 @@
+﻿@model IEnumerable<WebApplication.Employee>
+
+@{
+    Layout = "~/Views/Home/Shared/HomeLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "PersonalInfo";
+}
+
+<div class="form-horizontal">
+    <h4>Personal Information</h4>
+    <hr />
+    <table class="personal-info-table">
+
+        @foreach (var item in Model)
+        {
+            if (Session["LoggedUserID"].ToString() == item.id.ToString())
+            {
+                int userId = Convert.ToInt32(Session["LoggedUserID"]);
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.name)
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.surname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.surname)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.phoneNum)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.phoneNum)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.username)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.password)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.password)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.startDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.startDate)
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.role)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.role)
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.eligibleDays)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.eligibleDays)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.daysLeft)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.daysLeft)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        @Html.ActionLink("Edit", "Edit", new {id = item.id}) |
+                        @Html.ActionLink("Delete", "Delete", new {id = item.id})
+                    </td>
+                </tr>
+
+            }
+        }
+    </table>
+    <div id="back-link">
+        @Html.ActionLink("Back", "Index")
+    </div>
+</div>
+
+    <div>
+        @Html.ValidationSummary(true)
+    </div>

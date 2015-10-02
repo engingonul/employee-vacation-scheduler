@@ -1,0 +1,169 @@
+﻿.nav {
+    width: 1280px;
+    height: 25px;
+    margin-left: 30px;
+    margin-top: 1px;
+}
+
+#wrapper {
+    display: inline-block;
+    clear: both;
+}
+
+#sidebar {
+    float: left;
+    width: 250px;
+    height: 520px;
+    border: 3px solid black;
+    border-radius: 20px;
+    margin-left: 5px;
+}
+
+#info {
+    float: right;
+    width: 1010px;
+    height: 520px;
+    border: 3px solid black;
+    border-radius: 20px;
+    margin-right: 7px;
+}
+
+#menu-list li {
+    list-style-type: square;
+}
+
+#menu-list li > a {
+    color: white;
+    text-decoration: none;
+}
+
+#menu-list li > a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+#menu-list li > a:hover {
+    color: goldenrod;
+    text-decoration: none;
+}
+
+#menu-list {
+    font-size: 16px;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+
+.info-table {
+    width: 600px;
+    margin: 15px;
+    display:block;
+}
+
+.info-table tbody {
+    height: 400px;
+    width: 600px;
+    overflow: scroll;
+}
+
+.info-table tr { 
+    border: 1px solid ghostwhite;
+}
+
+.info-table td {
+    text-align: center;
+    height: 40px;
+    border: 1px solid ghostwhite;
+    
+}
+
+.personal-info-table {
+    border: solid 1px ghostwhite;
+    width: 500px;
+    margin: 35px;
+}
+
+.personal-info-table tr {
+    border: solid 1px ghostwhite;
+    height: 30px;
+}
+
+.personal-info-table td {
+    border: solid 1px ghostwhite;
+    text-align: center;
+}
+
+#logout {
+    margin-left: 5px;
+}
+
+.form-horizontal {
+    margin: 15px;
+}
+
+#delete-content {
+    margin: 15px;
+}
+
+#details-content {
+    margin: 15px;
+}
+
+#request-form {
+    margin-left: 50px;
+    width: 700px;
+}
+
+#vacations-table {
+    width: 960px;
+    text-align: center;
+    margin: 15px;
+}
+
+#vacations-table tr {
+    height: 30px;
+    border: 1px solid ghostwhite;
+}
+
+#vacations-table td {
+    border: 1px solid ghostwhite;
+}
+
+#vacations-table th {
+    text-align: center;
+    border: 1px solid ghostwhite;
+}
+
+#back-link {
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+#table-wrapper {
+  position:relative;
+}
+#table-scroll {
+  height:352px;
+  overflow:auto;  
+  overflow-x: hidden;
+  margin-top:20px;
+}
+#table-wrapper table {
+  width:%100;
+  text-align: center;
+  border: solid 1px ghostwhite;
+}
+#table-wrapper table td {
+    border: solid 1px ghostwhite;
+    height: 30px;
+}
+#table-wrapper table {
+  width:100%;
+}
+#table-wrapper table * {
+  color:ghostwhite;
+}
+
+#table-wrapper table th {
+    text-align: center;
+}
+

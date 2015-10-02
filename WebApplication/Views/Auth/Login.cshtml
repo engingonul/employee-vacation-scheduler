@@ -1,0 +1,46 @@
+﻿@model WebApplication.Employee
+
+@{
+    ViewBag.Title = "Login";
+}
+<div id="form">
+    @using (Html.BeginForm("Login", "Auth", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()          // this is for prevent CSRF attack
+        if (@ViewBag.Message != null)
+        {
+            <div style="border:1px solid red">
+                @ViewBag.Message
+            </div>
+        }
+
+        <div class="login-form">
+            <h1>Sign In</h1>
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(a => a.username, new {@class = "form-control", @placeholder = "Username", @Autocomplete = "off"})
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-10">
+                        @Html.PasswordFor(a => a.password, new {@class = "form-control", @placeholder = "Password", @Autocomplete = "off"})
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <span style="display: table-cell; text-align: left; margin-left: 3px;">
+                            <a href="#">Forgot Password?</a>
+                    </span>
+                        <span style="display: table-cell">
+                        <button type="submit" class="btn btn-default">Login</button>
+                    </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        @Html.ValidationSummary(true)
+    }
+</div>

@@ -1,0 +1,44 @@
+﻿body {
+    background: gray;
+    font-size: 14px;
+    overflow-y: scroll;
+}
+
+#container {
+    background: #404040;
+    position: relative;
+    width: 1280px;
+    min-height: 640px;
+    margin: auto;
+    margin-top: 1px;
+    color: white;
+}
+
+.header {
+    background: white;
+    width: 1280px;
+    height: 75px;
+    text-align: center;
+}
+
+
+#content {
+    position: relative;
+    width: 1280px;
+    min-height: 545px;
+}
+
+#footer {
+    width: 1280px;
+    height: 20px;
+    line-height: 20px;
+    color: black;
+    position: relative;
+    text-align: center;
+    background: white;
+}
+
+#form {
+    text-align: center;
+    margin-top: 80px;
+}

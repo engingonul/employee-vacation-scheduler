@@ -1,0 +1,29 @@
+﻿.validation-summary-errors {
+    background-color: #404040;
+    text-decoration: none;
+    border-radius:4px;
+    border: solid 1px rosybrown;
+    display: block;
+    width: 350px;
+    position: relative;
+    right:0; left:455px;
+    text-align: left;
+    font-weight: bold;
+    color: rosybrown;
+    
+}
+
+.field-validation-error {
+    color: red;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid red;
+}
+
+
+

@@ -1,0 +1,87 @@
+﻿@model IEnumerable<WebApplication.Vacation>
+
+@{
+    Layout = "~/Views/Home/Shared/HomeLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Previous Vacations";
+}
+
+<div class="form-horizontal">
+    <h4>Previous Vacations</h4>
+    <hr />
+
+    <div id="table-wrapper">
+        <div id="table-scroll">
+            <table>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.type)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.start_date)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.end_date)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.days)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.accessible_num)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.reason)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.approved_by)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.status)
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    if (Session["LoggedUserID"].ToString() == item.emp_id.ToString())
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.start_date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.end_date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.days)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.accessible_num)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.reason)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.approved_by)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.status)
+                            </td>
+                        </tr>
+                    }
+
+                }
+
+            </table>
+        </div>
+    </div>
+
+
+            <div id="back-link">
+                @Html.ActionLink("Back", "Index")
+            </div>
+        </div>

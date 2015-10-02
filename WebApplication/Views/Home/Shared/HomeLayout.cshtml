@@ -1,0 +1,99 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="nav">
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (Session["LoggedUserFullname"] != null)
+        {
+            <span>
+                <text>
+                    Welcome, @Session["LoggedUserFullname"].ToString()
+                </text>
+            </span>
+            <span id="logout">
+                <a style="color: goldenrod; text-decoration: none" href="@Url.RouteUrl("logout")">Logout</a>
+            </span>
+        }
+     }
+
+    @if (!User.Identity.IsAuthenticated)
+    {
+        FormsAuthentication.SignOut();
+        Session.Abandon();
+    }
+</div>
+
+<div id="wrapper">
+    <div id="sidebar">
+        <div id="menu-list">
+            <ul>
+                <li>
+                    <a id="p-info"href="@Url.RouteUrl("PersonalInfo")">Personal Info</a>
+                </li>
+
+                <li>
+                    <a id="new-rq"href="@Url.RouteUrl("NewRequest")">New Vacation Request</a>
+                </li>
+
+                <li>
+                    <a href="@Url.RouteUrl("Vacations")">My Previous Vacations</a>
+                </li>
+                @if (Session["LoggedUserRole"].ToString() == "hr")
+                {
+                    <li>
+                        <a href="@Url.RouteUrl("VacationsAwaiting")">Awaiting Employee Vacations</a>
+                    </li>
+                    <li>
+                        <a href="@Url.RouteUrl("EmployeeInfo")">Employee Info</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $('#p-info').click(function() {
+        $.ajax({
+                url: "@Url.Action("RefreshInfo")",
+                type: "POST",
+                data: { id: @Session["LoggedUserId"] }
+
+            })
+            .success(function(result) {
+
+            })
+            .error(function(xhr, status) {
+                alert(status);
+            });
+    });
+</script>
+
+<script>
+    $('#new-rq').click(function() {
+        $.ajax({
+            url: "@Url.Action("RefreshInfo")",
+            type: "POST",
+            data: { id: @Session["LoggedUserId"] }
+
+        })
+            .success(function(result) {
+
+            })
+            .error(function(xhr, status) {
+                alert(status);
+            });
+    });
+</script>
+
+<div id="info">
+
+    @RenderBody()
+
+</div>
+

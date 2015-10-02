@@ -1,0 +1,108 @@
+﻿@model IEnumerable<WebApplication.Employee>
+
+@{
+    Layout = "~/Views/Home/Shared/HomeLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Employee Info";
+}
+
+
+<div id="dropdowns" class="form-horizontal">
+    <h4>Employee Info</h4>
+    <hr />
+
+    <table>
+
+        <tr class="col-md-10">
+            <td class="col-md-10">
+                @Html.DropDownList("EmployeeName", (IEnumerable<SelectListItem>)ViewBag.Employee, "List By Name", new { style = "width: 200px; color: black" })
+            </td>
+            <td class="col-md-10">
+                @Html.DropDownList("StartDate", (IEnumerable<SelectListItem>)ViewBag.StartDate, "List By Year", new { style = "width: 200px; color: black" })
+            </td>
+            <td class="col-md-10">
+                @Html.DropDownList("LeftDays", (IEnumerable<SelectListItem>)ViewBag.LeftDays, "List By Days", new { style = "width: 200px; color: black" })
+            </td>
+            <td class="col-md-10">
+                <a class="btn btn-default glyphicon glyphicon-search" href="#"></a>
+            </td>
+            <td class="col-md-10">
+                <a class="btn btn-default glyphicon glyphicon-refresh" href="@Url.RouteUrl("EmployeeInfo")"> Reset</a>
+            </td>
+        </tr>
+
+    </table>
+
+
+    <div id="table-wrapper">
+        <div id="table-scroll">
+            <table >
+                <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.surname)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.startDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.role)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.daysLeft)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.phoneNum)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.username)
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.surname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.startDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.role)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.daysLeft)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.phoneNum)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.username)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Review", "EmployeeReview", new { id = item.id }, new {@class="btn-sm btn-info"})
+                        </td>
+                    </tr>  
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="back-link">
+        @Html.ActionLink("Back", "Index")
+    </div>
+</div>

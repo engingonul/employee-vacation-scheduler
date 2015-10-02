@@ -1,0 +1,95 @@
+﻿@using System.Activities.Validation
+@using System.Collections
+@using System.Web.Optimization
+@model  WebApplication.Models.MultipleViewModel
+
+@{
+    Layout = "~/Views/Home/Shared/HomeLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Vacation Request";
+}
+
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+
+
+<div id="request-form">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>New Vacation Request</h4>
+            <hr/>
+            <!--Html.ValidationSummary(true, "", new { class = "text-danger" })-->
+            <div class="form-group">
+                @Html.LabelFor(model => model.Vacation.type, "Type", htmlAttributes: new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.Vacation.type, (SelectList) ViewBag.Item, "Select Type", new {@class = "form-control"})
+                    @Html.ValidationMessageFor(model => model.Vacation.type, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Vacation.start_date, "Start Date", htmlAttributes: new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Vacation.start_date, new {htmlAttributes = new {@class = "form-control", autocomplete = "off"}})
+                    @Html.ValidationMessageFor(model => model.Vacation.start_date, "Please enter a date.", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Vacation.end_date, "End Date", htmlAttributes: new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Vacation.end_date, new {htmlAttributes = new {@class = "form-control", autocomplete = "off"}})
+                    @Html.ValidationMessageFor(model => model.Vacation.end_date, "Please enter a date.", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Vacation.reason, "Reason", htmlAttributes: new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Vacation.reason, new {htmlAttributes = new {@class = "form-control", autocomplete = "off"}})
+                    @Html.ValidationMessageFor(model => model.Vacation.reason, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Vacation.accessible_num, "Accessible Num", htmlAttributes: new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Vacation.accessible_num, new {htmlAttributes = new {@class = "form-control", autocomplete = "off"}})
+                    @Html.ValidationMessageFor(model => model.Vacation.accessible_num, "Phone number must be 11 digits, starting with 0.", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Vacation.approved_by, "Approver", htmlAttributes: new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Vacation.approved_by, new {htmlAttributes = new {@class = "form-control", autocomplete = "off"}})
+                    @Html.ValidationMessageFor(model => model.Vacation.approved_by, "Please enter approver's name.", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Send Request" class="btn btn-default"/>
+                </div>
+            </div>
+        </div>
+    }
+    <div id="back-link">
+        @Html.ActionLink("Back", "Index")
+    </div>
+
+    <div>
+        @Html.ValidationSummary(true)
+    </div>
+    
+</div>
+
+
+
+
