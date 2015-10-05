@@ -39,7 +39,10 @@ namespace WebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Employee employee = db.Employee.Find(id);
+
+
             if (employee == null)
             {
                 return HttpNotFound();
@@ -53,16 +56,15 @@ namespace WebApplication.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(
-            [Bind(Include = "id,name,surname,phoneNum,username,password,startDate,role")] Employee employee)
+            [Bind(Include = "id,name,surname,phoneNum,username,password,startDate,role,eligibleDays,daysLeft")] Employee employee)
         {
             if (User.Identity.IsAuthenticated == false)
                 return RedirectToRoute("login");
+            
 
             if (ModelState.IsValid)
             {
                 db.Entry(employee).State = EntityState.Modified;
-                employee.role = false;
-
                 db.SaveChanges();
                 return RedirectToAction("PersonalInfo");
             }
@@ -284,24 +286,71 @@ namespace WebApplication.Controllers
                   Text = c.name + " " + c.surname
               });
             ViewBag.Employee = names;
+            
 
-            IEnumerable<SelectListItem> date = db.Employee
-              .Select(c => new SelectListItem
-              {
-                  Value = c.startDate.ToString(),
-                  Text = c.startDate.ToString()
-              });
-            ViewBag.StartDate = date;
+            var model = from e in db.Employee
+                        orderby e.name
+                        select e;
 
-            IEnumerable<SelectListItem> days = db.Employee
-              .Select(c => new SelectListItem
-              {
-                  Value = c.daysLeft.ToString(),
-                  Text = c.daysLeft.ToString()
-              });
-            ViewBag.LeftDays = days;
+            return View(model);
+        }
 
-            return View(db.Employee.ToList());
+        [HttpPost]
+        public ActionResult EmployeeInfo(string searchString, string LeftDays, string date1, string date2)
+        {
+            var employees = from e in db.Employee
+                            select e;
+            
+            if (!String.IsNullOrEmpty(LeftDays))
+            {
+                if (LeftDays == "0")
+                {
+                    employees = from e in db.Employee
+                        where e.daysLeft <= 5
+                        select e;
+                }
+                else if (LeftDays == "1")
+                {
+                    employees = from e in db.Employee
+                                where e.daysLeft > 5
+                                where e.daysLeft <= 15
+                                select e;
+                }
+                else if (LeftDays == "2")
+                {
+                    employees = from e in db.Employee
+                                where e.daysLeft > 15
+                                where e.daysLeft <= 30
+                                select e;
+                }
+                else if (LeftDays == "3")
+                {
+                    employees = from e in db.Employee
+                                where e.daysLeft > 30
+                                select e;
+                }
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                employees = employees.Where(s => s.name.StartsWith(searchString)
+                                       || s.name.Contains(searchString));
+                
+            }
+
+            if (!String.IsNullOrEmpty(date1) && !String.IsNullOrEmpty(date2))
+            {
+
+                DateTime start = DateTime.Parse(date1);
+                DateTime end = DateTime.Parse(date2);
+
+                employees = from e in db.Employee
+                    where e.startDate >= start
+                    where e.startDate <= end
+                    select e;
+            }
+
+            return View(employees.OrderBy(i=>i.name).ToList());
         }
 
         public ActionResult EmployeeReview(int? id)

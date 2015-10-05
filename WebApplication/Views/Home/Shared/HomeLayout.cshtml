@@ -18,7 +18,7 @@
                 <a style="color: goldenrod; text-decoration: none" href="@Url.RouteUrl("logout")">Logout</a>
             </span>
         }
-     }
+    }
 
     @if (!User.Identity.IsAuthenticated)
     {
@@ -32,11 +32,11 @@
         <div id="menu-list">
             <ul>
                 <li>
-                    <a id="p-info"href="@Url.RouteUrl("PersonalInfo")">Personal Info</a>
+                    <a id="p-info" href="@Url.RouteUrl("PersonalInfo")">Personal Info</a>
                 </li>
 
                 <li>
-                    <a id="new-rq"href="@Url.RouteUrl("NewRequest")">New Vacation Request</a>
+                    <a id="new-rq" href="@Url.RouteUrl("NewRequest")">New Vacation Request</a>
                 </li>
 
                 <li>
@@ -96,4 +96,3 @@
     @RenderBody()
 
 </div>
-

@@ -8,37 +8,57 @@
     ViewBag.Title = "Employee Info";
 }
 
+<script type="text/javascript">
+    $(function() {
+        $(".datefield").datepicker({ dateFormat: "dd/mm/yy", changeYear: true, changeMonth: true, yearRange: "-80:+0" });
+    });
+
+    $(function () {
+        $(".datefield2").datepicker({ dateFormat: "dd/mm/yy", changeYear: true, changeMonth: true, yearRange: "-80:+0" });
+    });
+</script>
 
 <div id="dropdowns" class="form-horizontal">
     <h4>Employee Info</h4>
     <hr />
 
-    <table>
+    @using (Html.BeginForm())
+    {
+        <table>
+            <tr>
+                <td class="col-md-3">
+                    Find by name: @Html.TextBox("SearchString", null, new {@style = "width: 150px; color: black", @Autocomplete = "off"})
+                </td>
+                <td class="col-md-3">
+                    Vacation Days Left: @Html.DropDownList("LeftDays", new List<SelectListItem>
+                                        {
+                                            new SelectListItem {Text = "0 - 5", Value = "0"},
+                                            new SelectListItem {Text = "5 - 15", Value = "1"},
+                                            new SelectListItem {Text = "15 - 30", Value = "2"},
+                                            new SelectListItem {Text = "more than 30", Value = "3"}
+                                        }, "Select Days", new {@style = "width: 150px; color: black"})
+                </td>
+                <td class="col-md-3">
+                    Job Start Date: @Html.TextBox("Date1", null, new {@class = "datefield", type = "text", @style = "color: black"})
+                </td>
+                <td>
+                    <br/> @Html.TextBox("Date2", null, new {@class = "datefield2", type = "text", @style = "color: black"})
+                </td>
+                <td class="col-md-5">
+                    <br/>
+                    <button class="btn btn-default glyphicon glyphicon-search"> Search</button>
+                </td>
+                
+            </tr>
+        </table>
+    }
 
-        <tr class="col-md-10">
-            <td class="col-md-10">
-                @Html.DropDownList("EmployeeName", (IEnumerable<SelectListItem>)ViewBag.Employee, "List By Name", new { style = "width: 200px; color: black" })
-            </td>
-            <td class="col-md-10">
-                @Html.DropDownList("StartDate", (IEnumerable<SelectListItem>)ViewBag.StartDate, "List By Year", new { style = "width: 200px; color: black" })
-            </td>
-            <td class="col-md-10">
-                @Html.DropDownList("LeftDays", (IEnumerable<SelectListItem>)ViewBag.LeftDays, "List By Days", new { style = "width: 200px; color: black" })
-            </td>
-            <td class="col-md-10">
-                <a class="btn btn-default glyphicon glyphicon-search" href="#"></a>
-            </td>
-            <td class="col-md-10">
-                <a class="btn btn-default glyphicon glyphicon-refresh" href="@Url.RouteUrl("EmployeeInfo")"> Reset</a>
-            </td>
-        </tr>
 
-    </table>
 
 
     <div id="table-wrapper">
         <div id="table-scroll">
-            <table >
+            <table id="tbl-data">
                 <thead>
                 <tr>
                     <th>
@@ -93,16 +113,21 @@
                             @Html.DisplayFor(modelItem => item.username)
                         </td>
                         <td>
-                            @Html.ActionLink("Review", "EmployeeReview", new { id = item.id }, new {@class="btn-sm btn-info"})
+                            @Html.ActionLink("Review", "EmployeeReview", new {id = item.id}, new {@class = "btn-sm btn-info"})
                         </td>
-                    </tr>  
+                    </tr>
                 }
                 </tbody>
             </table>
         </div>
     </div>
 
-    <div id="back-link">
+    <div id="back-link" style="float:left">
         @Html.ActionLink("Back", "Index")
     </div>
+
+    <div id="refresh-btn">
+        @Html.ActionLink("Refresh", "EmployeeInfo",null, new {@class="btn-sm btn-default"})
+    </div>
 </div>
+

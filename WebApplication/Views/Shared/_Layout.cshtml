@@ -7,8 +7,15 @@
         <meta name="viewport" content="width=device-width" />
         <title>@ViewBag.Title</title>
 
+
         @Styles.Render("~/styles")
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/jqueryui")
+        @Scripts.Render("~/bundles/modernizr")
+
         <script src="@Url.Content("~/Scripts/jquery-2.1.4.min.js")" type="text/javascript"></script>
+
     </head>
 <body>
 
@@ -28,7 +35,11 @@
 </section>
 
     @Scripts.Render("~/scripts")
-    @Scripts.Render("~/bundles/jquery");
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryui")
+    
+
 </body>
 </html>
