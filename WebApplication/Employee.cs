@@ -7,13 +7,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class Employee
     {
         public int id { get; set; }
@@ -48,5 +49,8 @@ namespace WebApplication
 
         [Display(Name = "Days Left (Vacation)")]
         public Nullable<double> daysLeft { get; set; }
+
+        [DefaultValue(true)]
+        public bool isActive { get; set; }
     }
 }

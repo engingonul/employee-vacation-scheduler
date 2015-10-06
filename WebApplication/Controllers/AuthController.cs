@@ -31,7 +31,22 @@ namespace WebApplication.Controllers
                 {
                     var v = ce.Employee.Where(a => a.username.Equals(form.username) && a.password.Equals(form.password)).FirstOrDefault();
 
-                    if (v != null)
+                    var n =
+                        ce.Admin.Where(x => x.username.Equals(form.username) && x.password.Equals(form.password))
+                            .FirstOrDefault();
+
+                    if (n != null)
+                    {
+                        FormsAuthentication.SetAuthCookie(n.username, true);
+
+                        return RedirectToRoute("index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "The username or password is incorrect.");
+                    }
+
+                    if (v != null && v.isActive == true)
                     {
                         FormsAuthentication.SetAuthCookie(v.username, true);
 
@@ -39,6 +54,7 @@ namespace WebApplication.Controllers
                         Session["LoggedUserDaysLeft"] = v.daysLeft;
                         Session["LoggedUserFullname"] = v.name.ToString() + " " + v.surname.ToString();
                         
+
                         if (v.role == true)  //if true then redirect to hr login
                         {
                             Session["LoggedUserRole"] = "hr";

@@ -7,16 +7,32 @@
 <div class="nav">
     @if (User.Identity.IsAuthenticated)
     {
-        if (Session["LoggedUserFullname"] != null)
+        if (User.IsInRole("employee"))
         {
-            <span>
+            if (Session["LoggedUserFullname"] != null)
+            {
+                <span>
                 <text>
                     Welcome, @Session["LoggedUserFullname"].ToString()
                 </text>
             </span>
-            <span id="logout">
+                <span id="logout">
                 <a style="color: goldenrod; text-decoration: none" href="@Url.RouteUrl("logout")">Logout</a>
             </span>
+            }
+        }
+
+        if (User.IsInRole("admin"))
+        {
+                <span>
+                    <text>
+                        Welcome, Administrator
+                    </text>
+                </span>
+                <span id="logout">
+                    <a style="color: goldenrod; text-decoration: none" href="@Url.RouteUrl("logout")">Logout</a>
+                </span>
+            
         }
     }
 
@@ -27,35 +43,56 @@
     }
 </div>
 
-<div id="wrapper">
-    <div id="sidebar">
-        <div id="menu-list">
-            <ul>
-                <li>
-                    <a id="p-info" href="@Url.RouteUrl("PersonalInfo")">Personal Info</a>
-                </li>
-
-                <li>
-                    <a id="new-rq" href="@Url.RouteUrl("NewRequest")">New Vacation Request</a>
-                </li>
-
-                <li>
-                    <a href="@Url.RouteUrl("Vacations")">My Previous Vacations</a>
-                </li>
-                @if (Session["LoggedUserRole"].ToString() == "hr")
-                {
+@if (User.IsInRole("employee"))
+{
+    <div id="wrapper">
+        <div id="sidebar">
+            <div id="menu-list">
+                <ul>
                     <li>
-                        <a href="@Url.RouteUrl("VacationsAwaiting")">Awaiting Employee Vacations</a>
+                        <a id="p-info" href="@Url.RouteUrl("PersonalInfo")">Personal Info</a>
                     </li>
+
                     <li>
-                        <a href="@Url.RouteUrl("EmployeeInfo")">Employee Info</a>
+                        <a id="new-rq" href="@Url.RouteUrl("NewRequest")">New Vacation Request</a>
                     </li>
-                }
-            </ul>
+
+                    <li>
+                        <a href="@Url.RouteUrl("Vacations")">My Previous Vacations</a>
+                    </li>
+                    @if (Session["LoggedUserRole"].ToString() == "hr")
+                    {
+                        <li>
+                            <a href="@Url.RouteUrl("VacationsAwaiting")">Awaiting Employee Vacations</a>
+                        </li>
+                        <li>
+                            <a href="@Url.RouteUrl("EmployeeInfo")">Employee Info</a>
+                        </li>
+                    }
+                </ul>
+            </div>
         </div>
     </div>
-</div>
+}
 
+@if (User.IsInRole("admin"))
+{
+    <div id="wrapper">
+        <div id="sidebar">
+            <div id="menu-list">
+                <ul>
+                    <li>
+                        <a href="@Url.RouteUrl("CreateUser")">Create New User</a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.RouteUrl("AdminSettings")">Admin Settings</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}
 
 <script>
     $('#p-info').click(function() {

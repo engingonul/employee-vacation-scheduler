@@ -56,7 +56,7 @@ namespace WebApplication.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(
-            [Bind(Include = "id,name,surname,phoneNum,username,password,startDate,role,eligibleDays,daysLeft")] Employee employee)
+            [Bind(Include = "id,name,surname,phoneNum,username,password,startDate,role,eligibleDays,daysLeft,isActive")] Employee employee)
         {
             if (User.Identity.IsAuthenticated == false)
                 return RedirectToRoute("login");
@@ -162,8 +162,7 @@ namespace WebApplication.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            // ModelState.AddModelError("", "The username or password is incorrect.");
+            
 
             return View();
         }
@@ -367,6 +366,15 @@ namespace WebApplication.Controllers
                         { Employee = e, Vacation = v };
 
             return View(model.ToList());
+        }
+
+        [HttpPost]
+        public JsonResult doesUserNameExist(string UserName)
+        {
+
+            var user = db.Employee.Where(a => a.username == UserName);
+
+            return Json(user == null);
         }
 
         protected override void Dispose(bool disposing)

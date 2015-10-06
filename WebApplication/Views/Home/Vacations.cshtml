@@ -1,4 +1,5 @@
-﻿@model IEnumerable<WebApplication.Vacation>
+﻿@using System.Text.RegularExpressions
+@model IEnumerable<WebApplication.Vacation>
 
 @{
     Layout = "~/Views/Home/Shared/HomeLayout.cshtml";
@@ -60,7 +61,8 @@
                                 @Html.DisplayFor(modelItem => item.days)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.accessible_num)
+                                @Html.HiddenFor(modelItem => item.accessible_num)
+                                @Regex.Replace(item.accessible_num, @"(\d{4})(\d{3})(\d{4})", "($1)-$2-$3")
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.reason)

@@ -46,6 +46,16 @@ namespace WebApplication
             routes.MapRoute("EmployeeInfo", "employeeInfo", new { controller = "Home", action = "EmployeeInfo" });
 
             routes.MapRoute("EmployeeReview", "employeeReview", new { controller = "Home", action = "EmployeeReview" });
+
+            routes.MapRoute("Index", "index", new { controller = "Admin", action = "Index" });
+
+            routes.MapRoute("CreateUser", "createUser", new { controller = "Admin", action = "CreateUser" });
+
+            routes.MapRoute("DeleteUser", "deleteUser", new { controller = "Admin", action = "DeleteUser" });
+
+            routes.MapRoute("AdminSettings", "adminSettings", new { controller = "Admin", action = "AdminSettings" });
+
+            routes.MapRoute("EmployeeEdit", "employeeEdit", new { controller = "Admin", action = "EmployeeEdit" });
         }
     }
 }

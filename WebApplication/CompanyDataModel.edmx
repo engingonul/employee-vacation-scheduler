@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="CompanyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="id" />
@@ -19,6 +27,7 @@
           <Property Name="role" Type="bit" Nullable="false" />
           <Property Name="eligibleDays" Type="float" />
           <Property Name="daysLeft" Type="float" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Vacation">
           <Key>
@@ -43,6 +52,7 @@
           <Property Name="item" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityContainer Name="CompanyModelStoreContainer">
+          <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vacation" EntityType="Self.Vacation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VacationTypes" EntityType="Self.VacationTypes" Schema="dbo" store:Type="Tables" />
@@ -65,6 +75,7 @@
           <Property Name="role" Type="Boolean" Nullable="false" />
           <Property Name="eligibleDays" Type="Double" />
           <Property Name="daysLeft" Type="Double" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Vacation">
           <Key>
@@ -92,7 +103,16 @@
           <EntitySet Name="Employee" EntityType="Self.Employee" />
           <EntitySet Name="Vacation" EntityType="Self.Vacation" />
           <EntitySet Name="VacationTypes" EntityType="Self.VacationTypes" />
+          <EntitySet Name="Admin" EntityType="CompanyModel.Admin" />
         </EntityContainer>
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -102,6 +122,7 @@
           <EntitySetMapping Name="Employee">
             <EntityTypeMapping TypeName="CompanyModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="daysLeft" ColumnName="daysLeft" />
                 <ScalarProperty Name="eligibleDays" ColumnName="eligibleDays" />
                 <ScalarProperty Name="id" ColumnName="id" />
@@ -136,6 +157,15 @@
               <MappingFragment StoreEntitySet="VacationTypes">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="item" ColumnName="item" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Admin">
+            <EntityTypeMapping TypeName="CompanyModel.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

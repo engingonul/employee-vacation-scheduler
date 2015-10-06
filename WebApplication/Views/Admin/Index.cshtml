@@ -1,0 +1,94 @@
+﻿@using System.Text.RegularExpressions
+@model IEnumerable<WebApplication.Employee>
+
+
+@{
+    Layout = "~/Views/Home/Shared/HomeLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "settings";
+}
+
+
+<div class="form-horizontal">
+    <h4>Employees</h4>
+    <hr />
+
+    <div id="table-wrapper">
+        <div id="table-scroll">
+            <table>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.surname)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.startDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.username)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.password)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.phoneNum)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.role)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.daysLeft)
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.surname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.startDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.username)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.password)
+                        </td>
+                        <td>
+                            @Html.HiddenFor(modelItem => item.phoneNum)
+                            @Regex.Replace(item.phoneNum, @"(\d{4})(\d{3})(\d{4})", "($1)-$2-$3")
+                        </td>
+                        <td>
+                            @Html.HiddenFor(modelItem => item.role)
+                            @((bool)item.role ? "Yes" : "No")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.daysLeft)
+                        </td>
+                        <td colspan="2">
+                            @Html.ActionLink("Edit", "EmployeeEdit", new {id = item.id}, new {@class = "btn-sm btn-info"})
+                        
+                            @Html.ActionLink("Delete", "DeleteUser", new { id = item.id }, new { @class = "btn-sm btn-danger" })
+                        </td>
+                    </tr>
+
+
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

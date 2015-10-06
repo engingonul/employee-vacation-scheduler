@@ -1,4 +1,5 @@
-﻿@model IEnumerable<WebApplication.Employee>
+﻿@using System.Text.RegularExpressions
+@model IEnumerable<WebApplication.Employee>
 
 @{
     Layout = "~/Views/Home/Shared/HomeLayout.cshtml";
@@ -42,7 +43,8 @@
                         @Html.DisplayNameFor(model => model.phoneNum)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.phoneNum)
+                        @Html.HiddenFor(modelItem => item.phoneNum)
+                        @Regex.Replace(item.phoneNum, @"(\d{4})(\d{3})(\d{4})", "($1)-$2-$3")
                     </td>
                 </tr>
 
@@ -79,7 +81,8 @@
                         @Html.DisplayNameFor(model => model.role)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.role)
+                        @Html.HiddenFor(modelItem => item.role)
+                        @((bool)item.role ? "Yes" : "No")
                     </td>
                 </tr>
 
@@ -104,8 +107,7 @@
 
                 <tr>
                     <td colspan="2">
-                        @Html.ActionLink("Edit", "Edit", new {id = item.id}) |
-                        @Html.ActionLink("Delete", "Delete", new {id = item.id})
+                        @Html.ActionLink("Edit", "Edit", new {id = item.id}, new { @class="btn-sm btn-default"})
                     </td>
                 </tr>
 
