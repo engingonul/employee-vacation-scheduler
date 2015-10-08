@@ -7,6 +7,9 @@ using System.Web.Security;
 using Microsoft.Ajax.Utilities;
 using Postal;
 using WebApplication.Models;
+using System.Net;
+using System.Net.Mail;
+using System.Web.WebSockets;
 
 
 namespace WebApplication.Controllers
@@ -87,24 +90,47 @@ namespace WebApplication.Controllers
         [HttpPost]
         public ActionResult PasswordReset(string username, string name, string surname, string phoneNum, string userEmail)
         {
+            try
+            {
+                var query = (from e in db.Employee
+                             where e.name == username
+                             where e.name == name
+                             where e.surname == surname
+                             where e.phoneNum == phoneNum
+                             select e).FirstOrDefault();
+
+                string query2 = (from e in db.Employee
+                                 where e.name == username
+                                 where e.name == name
+                                 where e.surname == surname
+                                 where e.phoneNum == phoneNum
+                                 select e.password).FirstOrDefault();
+
+                if (query != null)
+                {
+                    MailMessage msg = new MailMessage();
+                    msg.From = new MailAddress("egonul8@gmail.com");
+                    msg.To.Add(userEmail);
+                    msg.Subject = "Password Info";
+                    msg.Body = "Your password is :" + query2;
+                    SmtpClient sc = new SmtpClient("smtp.gmail.com");
+                    sc.Port = 587;
+                    sc.Credentials = new NetworkCredential("egonul8@gmail.com", "CBR600RR"); 
+                    sc.EnableSsl = true;
+                    sc.Send(msg);
+                    ViewBag.mailMessage = "e-mail has been sent. Please check your inbox.";
+                }
+                else
+                {
+                        ModelState.AddModelError("", "The data provided does not match the username. All fields must be filled.");
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.mailMessage = ex.Message;
+            }
             
-            var query = (from e in db.Employee
-                where e.name == name
-                where e.surname == surname
-                where e.phoneNum == phoneNum
-                select e).FirstOrDefault();
-          
-            if (query != null)
-            {
-                dynamic email = new Email("Example");
-                email.To = userEmail;
-                email.Send();
-                return RedirectToRoute("login");
-            }
-            else
-            {
-                ModelState.AddModelError("","the data provided does not match with the username.");
-            }
 
             return View();
         }
