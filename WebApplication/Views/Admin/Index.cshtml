@@ -10,10 +10,46 @@
     ViewBag.Title = "settings";
 }
 
+<script type="text/javascript">
+    $(function() {
+        $(".datefield").datepicker({ dateFormat: "dd/mm/yy", changeYear: true, changeMonth: true, yearRange: "-80:+0" });
+    });
+
+    $(function () {
+        $(".datefield2").datepicker({ dateFormat: "dd/mm/yy", changeYear: true, changeMonth: true, yearRange: "-80:+0" });
+    });
+</script>
 
 <div class="form-horizontal">
     <h4>Employees</h4>
-    <hr />
+    <hr/>
+
+    @using (Html.BeginForm())
+    {
+        <table>
+            <tr>
+                <td class="col-md-2">
+                    Find by username: @Html.TextBox("SearchString", null, new { @style = "width: 150px; color: black", @Autocomplete = "off" })
+                </td>
+                <td class="col-md-2">
+                    Job Start Date: @Html.TextBox("Date1", null, new { @class = "datefield", type = "text", @style = "color: black", @placeholder="First Date" })
+                </td>
+                <td>
+                    <br /> @Html.TextBox("Date2", null, new { @class = "datefield2", type = "text", @style = "color: black", @placeholder = "Last Date" })
+                </td>
+                <td class="col-md-2">
+                    <br/>
+                    <button class="btn btn-default glyphicon glyphicon-search"> Search</button>
+                </td>
+
+                <td class="col-md-3">
+                    <br/>
+                    @Html.ActionLink("Refresh", "Index", null, new {@class = "btn btn-default glyphicon glyphicon-refresh"})
+                </td>
+
+            </tr>
+        </table>
+    }
 
     <div id="table-wrapper">
         <div id="table-scroll">

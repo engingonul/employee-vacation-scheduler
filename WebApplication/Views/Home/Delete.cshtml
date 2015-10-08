@@ -69,7 +69,8 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.role)
+            @Html.HiddenFor(model => model.role)
+            @((bool)Model.role ? "Yes" : "No")
         </dd>
 
     </dl>

@@ -14,7 +14,7 @@
 
 
        
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit","Home",FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 

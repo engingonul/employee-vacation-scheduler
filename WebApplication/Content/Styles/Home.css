@@ -13,7 +13,7 @@
 #sidebar {
     float: left;
     width: 250px;
-    height: 540px;
+    height: 605px;
     border: 3px solid black;
     border-radius: 20px;
     margin-left: 5px;
@@ -22,7 +22,7 @@
 #info {
     float: right;
     width: 1010px;
-    height: 540px;
+    height: 605px;
     border: 3px solid black;
     border-radius: 20px;
     margin-right: 7px;
@@ -105,7 +105,7 @@
   position:relative;
 }
 #table-scroll {
-  height:355px;
+  height:400px;
   overflow:auto;  
   overflow-x: hidden;
   margin-top:20px;

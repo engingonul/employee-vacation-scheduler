@@ -5,12 +5,16 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Microsoft.Ajax.Utilities;
+using Postal;
+using WebApplication.Models;
 
 
 namespace WebApplication.Controllers
 {
     public class AuthController : Controller
     {
+        private CompanyEntities db = new CompanyEntities();
+
         // GET: Auth
         public ActionResult Login()
         {
@@ -40,10 +44,6 @@ namespace WebApplication.Controllers
                         FormsAuthentication.SetAuthCookie(n.username, true);
 
                         return RedirectToRoute("index");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "The username or password is incorrect.");
                     }
 
                     if (v != null && v.isActive == true)
@@ -76,6 +76,37 @@ namespace WebApplication.Controllers
             
             return View(form);
 
+        }
+
+        public ActionResult PasswordReset()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult PasswordReset(string username, string name, string surname, string phoneNum, string userEmail)
+        {
+            
+            var query = (from e in db.Employee
+                where e.name == name
+                where e.surname == surname
+                where e.phoneNum == phoneNum
+                select e).FirstOrDefault();
+          
+            if (query != null)
+            {
+                dynamic email = new Email("Example");
+                email.To = userEmail;
+                email.Send();
+                return RedirectToRoute("login");
+            }
+            else
+            {
+                ModelState.AddModelError("","the data provided does not match with the username.");
+            }
+
+            return View();
         }
 
         public ActionResult Logout()

@@ -17,6 +17,8 @@ namespace WebApplication
 
             routes.MapRoute("Logout", "logout", new { controller = "Auth", action = "Logout" });
 
+            routes.MapRoute("PasswordReset", "passwordReset", new { controller = "Auth", action = "PasswordReset" });
+
             routes.MapRoute("Home", "home", new { controller = "Home", action = "Index" });
 
             routes.MapRoute("Edit", "edit", new {controller = "Home", action="Edit"});

@@ -31,6 +31,35 @@ namespace WebApplication.Controllers
 
             return View(v.ToList());
         }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public ActionResult Index(string searchString, string date1, string date2)
+        {
+            var employees = from e in db.Employee
+                            select e;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                employees = employees.Where(s => s.username.StartsWith(searchString)
+                                       || s.username.Contains(searchString));
+
+            }
+
+            if (!String.IsNullOrEmpty(date1) && !String.IsNullOrEmpty(date2))
+            {
+
+                DateTime start = DateTime.Parse(date1);
+                DateTime end = DateTime.Parse(date2);
+
+                employees = from e in db.Employee
+                            where e.startDate >= start
+                            where e.startDate <= end
+                            select e;
+            }
+
+            return View(employees.OrderBy(i => i.name).ToList());
+        }
         
 
         [Authorize(Roles = "admin")]
@@ -46,12 +75,28 @@ namespace WebApplication.Controllers
         [HttpPost]
         public ActionResult CreateUser([Bind(Include = "id,name,surname,phoneNum,username,password,startDate,role,eligibleDays,daysLeft,isActive")] Employee employee)
         {
-            employee.eligibleDays = 0;
-            employee.daysLeft = 0;
+            HomeController hc = new HomeController();
+            employee.eligibleDays = hc.CalcEligibileDays(employee.startDate);
             employee.isActive = true;
 
             try
             {
+                if (employee.daysLeft == null)
+                {
+                    employee.daysLeft = employee.eligibleDays;
+                }
+
+                var unames = (from e in db.Employee
+                             where e.username == employee.username
+                             select e).FirstOrDefault();
+
+                if (unames != null)
+                {
+                    ModelState.AddModelError("","The username is in use.");
+                }
+
+
+            
                 if (ModelState.IsValid)
                 {
                     db.Employee.Add(employee);
@@ -61,7 +106,7 @@ namespace WebApplication.Controllers
             }
             catch (Exception)
             {
-                ModelState.AddModelError("", "Error occured.");
+                ModelState.AddModelError("", "Error while creating user. Please check the info you typed.");
             }
             
             return View();

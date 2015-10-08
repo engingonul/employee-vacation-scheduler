@@ -6,6 +6,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
@@ -122,48 +123,70 @@ namespace WebApplication.Controllers
         [HttpPost, ActionName("NewRequest")]
         [ValidateAntiForgeryToken]
         public ActionResult NewRequest(
-            [Bind(Include = "emp_id,type,start_date,end_date,reason,accessible_num,status,approved_by,days")] Vacation vacation)
+            [Bind(Include = "emp_id,type,start_date,end_date,reason,accessible_num,status,approved_by,days")] Vacation vacation, string halfdays)
         {
             if (User.Identity.IsAuthenticated == false)
                 return RedirectToRoute("login");
-            
-            ViewBag.Item = new SelectList(db.VacationTypes, "item", "item", vacation.type);
-
-            vacation.emp_id = Convert.ToInt32(Session["LoggedUserID"]);
-            vacation.status = "Pending";
-            vacation.days = GetWorkDays(vacation.start_date, vacation.end_date);
-
-            Employee employee = db.Employee.Find(vacation.emp_id);
-            
-            //vacation days validation
-            if (vacation.start_date < DateTime.Today.Date || vacation.start_date < DateTime.Today.Date || vacation.start_date > vacation.end_date)
-            {
-                ModelState.AddModelError("", "Invalid vacation dates.");
-            }
-
-            if (employee.daysLeft < vacation.days)
-            {
-                if (employee.eligibleDays == 0)
+            try
                 {
-                    if (employee.daysLeft > -5)
-                    {
-                        if (vacation.days > 5)
-                            ModelState.AddModelError("", "Freshmen can only take 5 days off.");
-                    }
+                    ViewBag.Item = new SelectList(db.VacationTypes, "item", "item", vacation.type);
+            
+                    if (halfdays == null)
+                {
+                    halfdays = "0";
                 }
-                else
-                    ModelState.AddModelError("", "You don't have enough days.");
-            }
+
+                Regex regex = new Regex("^[0-9]*$");
+                if (!regex.IsMatch(halfdays))
+                {
+                    ModelState.AddModelError("", "Only numbers allowed in 'Half Days' area.");
+                }
+
+
+                if (GetWorkDays(vacation.start_date, vacation.end_date) < Convert.ToInt32(halfdays))
+                {
+                    ModelState.AddModelError("","Half days can not be more than vacation days. Selected vacation days: " + GetWorkDays(vacation.start_date, vacation.end_date) );
+                }
+
+                vacation.emp_id = Convert.ToInt32(Session["LoggedUserID"]);
+                vacation.status = "Pending";
+                vacation.days = GetWorkDays(vacation.start_date, vacation.end_date) - (Convert.ToInt32(halfdays)*0.5);
+
+                Employee employee = db.Employee.Find(vacation.emp_id);
+            
+                //vacation days validation
+                if (vacation.start_date < DateTime.Today.Date || vacation.start_date < DateTime.Today.Date || vacation.start_date > vacation.end_date)
+                {
+                    ModelState.AddModelError("", "Invalid vacation dates.");
+                }
+
+                if (employee.daysLeft < vacation.days)
+                {
+                    if (employee.eligibleDays == 0)
+                    {
+                        if (employee.daysLeft > -5)
+                        {
+                            if (vacation.days > 5)
+                                ModelState.AddModelError("", "Freshmen can only take 5 days off.");
+                        }
+                    }
+                    else
+                        ModelState.AddModelError("", "You don't have enough days.");
+                }
 
             
-            if (ModelState.IsValid)
+                    if (ModelState.IsValid)
+                    {
+                        db.Vacation.Add(vacation);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+            }
+            catch (Exception)
             {
-                db.Vacation.Add(vacation);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ModelState.AddModelError("","Error occured. Please check the info you typed.");
             }
             
-
             return View();
         }
 
@@ -367,16 +390,7 @@ namespace WebApplication.Controllers
 
             return View(model.ToList());
         }
-
-        [HttpPost]
-        public JsonResult doesUserNameExist(string UserName)
-        {
-
-            var user = db.Employee.Where(a => a.username == UserName);
-
-            return Json(user == null);
-        }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)
