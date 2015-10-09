@@ -29,5 +29,6 @@ namespace WebApplication
         public virtual DbSet<Vacation> Vacation { get; set; }
         public virtual DbSet<VacationTypes> VacationTypes { get; set; }
         public virtual DbSet<Admin> Admin { get; set; }
+        public virtual DbSet<Holiday> Holiday { get; set; }
     }
 }

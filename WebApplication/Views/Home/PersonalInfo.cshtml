@@ -68,6 +68,15 @@
 
                 <tr>
                     <td>
+                        @Html.DisplayNameFor(model => model.email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.email)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
                         @Html.DisplayNameFor(model => model.startDate)
                     </td>
                     <td>
@@ -105,8 +114,8 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td colspan="2">
+                <tr  style="border: none">
+                    <td colspan="2" style="border: none">
                         @Html.ActionLink("Edit", "Edit", new {id = item.id}, new { @class="btn-sm btn-default"})
                     </td>
                 </tr>

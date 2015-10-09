@@ -11,11 +11,11 @@
 
 <script type="text/javascript">
     $(function() {
-        $(".datefield").datepicker({ dateFormat: "dd/mm/yy", changeYear: true, changeMonth: true, yearRange: "-80:+0" });
+        $(".datefield").datepicker({ dateFormat: "dd/mm/yy", changeYear: true, firstDay: 1, changeMonth: true, yearRange: "-80:+0" });
     });
 
     $(function () {
-        $(".datefield2").datepicker({ dateFormat: "dd/mm/yy", changeYear: true, changeMonth: true, yearRange: "-80:+0" });
+        $(".datefield2").datepicker({ dateFormat: "dd/mm/yy", changeYear: true, firstDay: 1, changeMonth: true, yearRange: "-80:+0" });
     });
 </script>
 
@@ -43,7 +43,7 @@
                     Job Start Date: @Html.TextBox("Date1", null, new {@class = "datefield", type = "text", @style = "color: black", @placeholder = "First Date" })
                 </td>
                 <td>
-                    <br/> @Html.TextBox("Date2", null, new {@class = "datefield2", type = "text", @style = "color: black", @placeholder = "First Date" })
+                    <br/> @Html.TextBox("Date2", null, new {@class = "datefield2", type = "text", @style = "color: black", @placeholder = "Last Date" })
                 </td>
                 <td class="col-md-5">
                     <br/>

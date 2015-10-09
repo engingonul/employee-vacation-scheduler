@@ -74,6 +74,9 @@
                         @Html.DisplayNameFor(model => model.phoneNum)
                     </th>
                     <th>
+                        @Html.DisplayNameFor(model => model.email)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.role)
                     </th>
                     <th>
@@ -106,6 +109,9 @@
                         <td>
                             @Html.HiddenFor(modelItem => item.phoneNum)
                             @Regex.Replace(item.phoneNum, @"(\d{4})(\d{3})(\d{4})", "($1)-$2-$3")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.email)
                         </td>
                         <td>
                             @Html.HiddenFor(modelItem => item.role)

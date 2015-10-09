@@ -204,6 +204,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <Content Include="Scripts\jquery-ui.multidatespicker.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -239,6 +240,9 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Holiday.cs">
+      <DependentUpon>CompanyDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\RoleProvider.cs" />
     <Compile Include="Models\EmployeeVM.cs" />
@@ -278,7 +282,7 @@
     <Content Include="Views\Auth\PasswordReset.cshtml" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />
     <Content Include="Views\Emails\Web.config" />
-    <Content Include="Views\Emails\Example.cshtml" />
+    <Content Include="Views\Home\DetermineHolidays.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

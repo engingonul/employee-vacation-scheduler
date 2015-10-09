@@ -25,8 +25,9 @@ namespace WebApplication.App_Start
                 .Include("~/Scripts/jquery.validate.unobtrusive.js")
                 .Include("~/Scripts/bootstrap.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-            "~/Scripts/jquery-ui-1.11.4.js"));
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui")
+                .Include("~/Scripts/jquery-ui-1.11.4.js")
+                .Include("~/Scripts/jquery-ui.multidatespicker.js"));
             
             bundles.Add(new StyleBundle("~/Content/jqueryui")
                .Include("~/Content/themes/base/all.css"));

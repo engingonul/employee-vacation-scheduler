@@ -14,7 +14,7 @@ namespace WebApplication
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Employee
     {
         public int id { get; set; }
@@ -44,13 +44,16 @@ namespace WebApplication
         [Display(Name = "Human Resources")]
         public bool role { get; set; }
 
-        [Display(Name = "Total Eligible Days (Vacation)")]
+        [Display(Name = "Total Eligible Days")]
         public Nullable<double> eligibleDays { get; set; }
 
-        [Display(Name = "Days Left (Vacation)")]
+        [Display(Name = "Days Left")]
         public Nullable<double> daysLeft { get; set; }
 
         [DefaultValue(true)]
         public bool isActive { get; set; }
+
+        [Display(Name = "eMail")]
+        public string email { get; set; }
     }
 }

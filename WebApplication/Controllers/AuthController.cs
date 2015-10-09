@@ -38,8 +38,7 @@ namespace WebApplication.Controllers
                 {
                     var v = ce.Employee.Where(a => a.username.Equals(form.username) && a.password.Equals(form.password)).FirstOrDefault();
 
-                    var n =
-                        ce.Admin.Where(x => x.username.Equals(form.username) && x.password.Equals(form.password))
+                    var n = ce.Admin.Where(x => x.username.Equals(form.username) && x.password.Equals(form.password))
                             .FirstOrDefault();
 
                     if (n != null)
@@ -93,32 +92,35 @@ namespace WebApplication.Controllers
             try
             {
                 var query = (from e in db.Employee
-                             where e.name == username
+                             where e.username == username
                              where e.name == name
                              where e.surname == surname
                              where e.phoneNum == phoneNum
+                             where e.email == userEmail
                              select e).FirstOrDefault();
 
                 string query2 = (from e in db.Employee
-                                 where e.name == username
+                                 where e.username == username
                                  where e.name == name
                                  where e.surname == surname
                                  where e.phoneNum == phoneNum
+                                 where e.email == userEmail
                                  select e.password).FirstOrDefault();
 
                 if (query != null)
                 {
-                    MailMessage msg = new MailMessage();
-                    msg.From = new MailAddress("egonul8@gmail.com");
-                    msg.To.Add(userEmail);
-                    msg.Subject = "Password Info";
-                    msg.Body = "Your password is :" + query2;
-                    SmtpClient sc = new SmtpClient("smtp.gmail.com");
-                    sc.Port = 587;
-                    sc.Credentials = new NetworkCredential("egonul8@gmail.com", "CBR600RR"); 
-                    sc.EnableSsl = true;
-                    sc.Send(msg);
-                    ViewBag.mailMessage = "e-mail has been sent. Please check your inbox.";
+                        MailMessage msg = new MailMessage();
+                        msg.From = new MailAddress("egonul8@gmail.com");
+                        msg.To.Add(userEmail);
+                        msg.Subject = "Password Info";
+                        msg.Body = "Your password is : " + query2;
+                        SmtpClient sc = new SmtpClient("smtp.gmail.com");
+                        sc.Port = 587;
+                        sc.Credentials = new NetworkCredential("egonul8@gmail.com", "CBR600RR");
+                        sc.EnableSsl = true;
+                        sc.Send(msg);
+                        ViewBag.mailMessage = "e-mail has been sent. Please check your inbox.";
+                        
                 }
                 else
                 {
@@ -141,6 +143,6 @@ namespace WebApplication.Controllers
             Session.Abandon();
             return RedirectToRoute("login");   
         }
-
+        
     }
 }

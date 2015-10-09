@@ -13,7 +13,7 @@
 #sidebar {
     float: left;
     width: 250px;
-    height: 605px;
+    height: 610px;
     border: 3px solid black;
     border-radius: 20px;
     margin-left: 5px;
@@ -21,8 +21,9 @@
 
 #info {
     float: right;
+    font-size: 14px;
     width: 1010px;
-    height: 605px;
+    height: 610px;
     border: 3px solid black;
     border-radius: 20px;
     margin-right: 7px;
@@ -30,6 +31,7 @@
 
 #menu-list li {
     list-style-type: square;
+    margin-top: 25px;
 }
 
 #menu-list li > a {
@@ -54,7 +56,6 @@
 }
 
 .personal-info-table {
-    border: solid 1px ghostwhite;
     width: 500px;
     margin: 35px;
 }
@@ -105,13 +106,13 @@
   position:relative;
 }
 #table-scroll {
-  height:400px;
+  height:410px;
   overflow:auto;  
   overflow-x: hidden;
   margin-top:20px;
 }
 #table-wrapper table {
-  width:%100;
+  width:100%;
   text-align: center;
   border: solid 1px ghostwhite;
 }
@@ -130,3 +131,14 @@
     text-align: center;
 }
 
+/* begin: jQuery UI Datepicker moving pixels fix */
+	table.ui-datepicker-calendar {border-collapse: separate;}
+	.ui-datepicker-calendar td {border: 1px solid transparent;}
+/* end: jQuery UI Datepicker moving pixels fix */
+
+/* begin: jQuery UI Datepicker emphasis on selected dates */
+.ui-datepicker .ui-datepicker-calendar .ui-state-highlight a {
+	background: #743620 none; /* a color that fits the widget theme */
+	color: white; /* a color that is readeable with the color above */
+}
+/* end: jQuery UI Datepicker emphasis on selected dates */

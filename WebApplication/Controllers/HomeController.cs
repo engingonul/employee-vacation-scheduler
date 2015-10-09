@@ -57,18 +57,26 @@ namespace WebApplication.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(
-            [Bind(Include = "id,name,surname,phoneNum,username,password,startDate,role,eligibleDays,daysLeft,isActive")] Employee employee)
+            [Bind(Include = "id,name,surname,phoneNum,username,password,startDate,role,eligibleDays,daysLeft,isActive,email")] Employee employee)
         {
             if (User.Identity.IsAuthenticated == false)
                 return RedirectToRoute("login");
-            
-
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(employee).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("PersonalInfo");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(employee).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("PersonalInfo");
+                }
             }
+            catch (Exception exception)
+            {
+                
+               ModelState.AddModelError("",exception.ToString());
+            }
+
+            
 
             return View(employee);
         }
@@ -127,11 +135,13 @@ namespace WebApplication.Controllers
         {
             if (User.Identity.IsAuthenticated == false)
                 return RedirectToRoute("login");
-            try
-                {
-                    ViewBag.Item = new SelectList(db.VacationTypes, "item", "item", vacation.type);
+
             
-                    if (halfdays == null)
+            try
+            {
+                ViewBag.Item = new SelectList(db.VacationTypes, "item", "item", vacation.type);
+            
+                if (halfdays == null)
                 {
                     halfdays = "0";
                 }
@@ -147,10 +157,25 @@ namespace WebApplication.Controllers
                 {
                     ModelState.AddModelError("","Half days can not be more than vacation days. Selected vacation days: " + GetWorkDays(vacation.start_date, vacation.end_date) );
                 }
+                
+                double count = 0;
 
+                for (DateTime date = vacation.start_date; date <= vacation.end_date; date = date.AddDays(1))
+                {
+                    var result = (from h in db.Holiday
+                                 where h.value == date
+                                 select h).FirstOrDefault();
+
+                    if (result != null)
+                    {
+                        count++;
+                    }
+                }
+                
                 vacation.emp_id = Convert.ToInt32(Session["LoggedUserID"]);
                 vacation.status = "Pending";
-                vacation.days = GetWorkDays(vacation.start_date, vacation.end_date) - (Convert.ToInt32(halfdays)*0.5);
+                vacation.days = GetWorkDays(vacation.start_date, vacation.end_date) - (Convert.ToInt32(halfdays)*0.5)-count;
+                
 
                 Employee employee = db.Employee.Find(vacation.emp_id);
             
@@ -175,12 +200,12 @@ namespace WebApplication.Controllers
                 }
 
             
-                    if (ModelState.IsValid)
-                    {
-                        db.Vacation.Add(vacation);
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
-                    }
+                if (ModelState.IsValid)
+                {
+                    db.Vacation.Add(vacation);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
             catch (Exception)
             {
@@ -300,16 +325,7 @@ namespace WebApplication.Controllers
         {
             if (User.Identity.IsAuthenticated == false)
                 return RedirectToRoute("login");
-
-            IEnumerable<SelectListItem> names = db.Employee
-              .Select(c => new SelectListItem
-              {
-                  Value = c.id.ToString(),
-                  Text = c.name + " " + c.surname
-              });
-            ViewBag.Employee = names;
             
-
             var model = from e in db.Employee
                         orderby e.name
                         select e;
@@ -390,7 +406,68 @@ namespace WebApplication.Controllers
 
             return View(model.ToList());
         }
-        
+
+        public ActionResult DetermineHolidays()
+        {
+            if (User.Identity.IsAuthenticated == false)
+                return RedirectToRoute("login");
+
+           /* var query = from q in db.Holiday
+                where Convert.ToInt32(q.value) > DateTime.Now.Year
+                where Convert.ToInt32(q.value) < DateTime.Now.Year+1
+                select q;*/
+
+            return View(db.Holiday.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult DetermineHolidays(string date)
+        {
+            Holiday holidays = new Holiday();
+
+            string[] dates = date.Split(',');
+            
+
+            try
+            {
+                 foreach (var item in dates)
+                 {
+                    if (ModelState.IsValid)
+                    {
+                        DateTime selectedDate = DateTime.Parse(item);
+                        var query = (from h in db.Holiday
+                            where h.value == selectedDate
+                            select h).FirstOrDefault();
+                        if (query != null)
+                        {
+                            ModelState.AddModelError("","Selected date is already a holiday: " + selectedDate.Date);
+                        }
+                        holidays.value = selectedDate;
+                        db.Holiday.Add(holidays);
+                        db.SaveChanges();
+                    }
+                    
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("","Error occured.");
+            }
+            
+
+            return View();
+        }
+
+        public void DeleteHoliday(int id)
+        {
+            Holiday holiday = db.Holiday.Find(id);
+
+            db.Holiday.Remove(holiday);
+            db.SaveChanges();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

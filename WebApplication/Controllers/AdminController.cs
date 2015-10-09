@@ -73,7 +73,7 @@ namespace WebApplication.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public ActionResult CreateUser([Bind(Include = "id,name,surname,phoneNum,username,password,startDate,role,eligibleDays,daysLeft,isActive")] Employee employee)
+        public ActionResult CreateUser([Bind(Include = "id,name,surname,phoneNum,username,password,startDate,role,eligibleDays,daysLeft,isActive,email")] Employee employee)
         {
             HomeController hc = new HomeController();
             employee.eligibleDays = hc.CalcEligibileDays(employee.startDate);
@@ -95,8 +95,7 @@ namespace WebApplication.Controllers
                     ModelState.AddModelError("","The username is in use.");
                 }
 
-
-            
+                
                 if (ModelState.IsValid)
                 {
                     db.Employee.Add(employee);
@@ -166,7 +165,7 @@ namespace WebApplication.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public ActionResult EmployeeEdit([Bind(Include = "id,name,surname,phoneNum,username,password,startDate,role,eligibleDays,daysLeft,isActive")] Employee employee)
+        public ActionResult EmployeeEdit([Bind(Include = "id,name,surname,phoneNum,username,password,startDate,role,eligibleDays,daysLeft,isActive,email")] Employee employee)
         {
             if (ModelState.IsValid)
             {

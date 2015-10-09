@@ -1,0 +1,92 @@
+﻿@model IEnumerable<WebApplication.Holiday>
+
+@{
+    Layout = "~/Views/Home/Shared/HomeLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Determine Holidays";
+}
+
+<script type="text/javascript">
+    $(function() {
+        $('.datefield').multiDatesPicker({ dateFormat: "dd/mm/yy", firstDay: 1 , changeYear: true, changeMonth: true, yearRange: "-0:+1" });
+    });
+</script>
+
+
+@using (Html.BeginForm())
+{
+    <table style="float: left; margin: 30px;">
+        <tr>
+            <td class="col-lg-10">
+                Please select holidays:
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <br/>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="col-md-1">
+                @Html.TextBox("Date", null, new {@class = "datefield", type = "text", @style = "color: black", @placeholder = "Pick Dates"})
+            </td>
+            <td>
+                <a href="@Url.RouteUrl("DetermineHolidays")" style="text-decoration: none"> Refresh</a>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="col-md-10">
+                <br/>
+                <button class="btn btn-default"> Confirm</button>
+            </td>
+
+        </tr>
+    </table>
+
+    @Html.ValidationSummary(true)
+}
+
+<div>
+    <table style="margin: 30px 0 0 500px; border: solid 1px ghostwhite">
+        <tr>
+            <th class="col-md-5">
+                @Html.DisplayNameFor(model => model.value)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="col-md-5">
+                    @Html.DisplayFor(modelItem => item.value)
+                </td>
+                <td class="col-md-5">
+                    <a href="@Url.Action("DetermineHolidays")" id="delete@(item.id)">Delete</a>
+                    <script>
+                        $('#delete@(item.id)').click(function() {
+                            $.ajax({
+                                    url: "@Url.Action("DeleteHoliday")",
+                                    type: "POST",
+                                    data: { id: @item.id }
+
+                                })
+                                .success(function(result) {
+                                    alert("Info : Holiday deleted.");
+                                })
+                                .error(function(xhr, status) {
+                                    alert(status);
+                                });
+                        });
+                    </script>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+

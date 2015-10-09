@@ -49,6 +49,8 @@ namespace WebApplication
 
             routes.MapRoute("EmployeeReview", "employeeReview", new { controller = "Home", action = "EmployeeReview" });
 
+            routes.MapRoute("DetermineHolidays", "determineHolidays", new { controller = "Home", action = "DetermineHolidays" });
+
             routes.MapRoute("Index", "index", new { controller = "Admin", action = "Index" });
 
             routes.MapRoute("CreateUser", "createUser", new { controller = "Admin", action = "CreateUser" });
@@ -58,6 +60,8 @@ namespace WebApplication
             routes.MapRoute("AdminSettings", "adminSettings", new { controller = "Admin", action = "AdminSettings" });
 
             routes.MapRoute("EmployeeEdit", "employeeEdit", new { controller = "Admin", action = "EmployeeEdit" });
+
+            routes.MapRoute("DeleteHoliday", "deleteHoliday", new { controller = "Home", action = "DeleteHoliday" });
         }
     }
 }

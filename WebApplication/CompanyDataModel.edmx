@@ -28,6 +28,14 @@
           <Property Name="eligibleDays" Type="float" />
           <Property Name="daysLeft" Type="float" />
           <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Holiday">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="value" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="Vacation">
           <Key>
@@ -54,6 +62,7 @@
         <EntityContainer Name="CompanyModelStoreContainer">
           <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Holiday" EntityType="Self.Holiday" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vacation" EntityType="Self.Vacation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VacationTypes" EntityType="Self.VacationTypes" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -76,6 +85,7 @@
           <Property Name="eligibleDays" Type="Double" />
           <Property Name="daysLeft" Type="Double" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Vacation">
           <Key>
@@ -104,6 +114,7 @@
           <EntitySet Name="Vacation" EntityType="Self.Vacation" />
           <EntitySet Name="VacationTypes" EntityType="Self.VacationTypes" />
           <EntitySet Name="Admin" EntityType="CompanyModel.Admin" />
+          <EntitySet Name="Holiday" EntityType="CompanyModel.Holiday" />
         </EntityContainer>
         <EntityType Name="Admin">
           <Key>
@@ -112,6 +123,13 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="username" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Holiday">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="value" Type="DateTime" Nullable="false" Precision="0" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -122,6 +140,7 @@
           <EntitySetMapping Name="Employee">
             <EntityTypeMapping TypeName="CompanyModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="daysLeft" ColumnName="daysLeft" />
                 <ScalarProperty Name="eligibleDays" ColumnName="eligibleDays" />
@@ -165,6 +184,14 @@
               <MappingFragment StoreEntitySet="Admin">
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Holiday">
+            <EntityTypeMapping TypeName="CompanyModel.Holiday">
+              <MappingFragment StoreEntitySet="Holiday">
+                <ScalarProperty Name="value" ColumnName="value" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

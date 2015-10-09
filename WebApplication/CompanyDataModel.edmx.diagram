@@ -4,11 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6ab0999a5a0441749c88871d98a6aaa6" Name="Diagram1" ZoomLevel="93">
+      <Diagram DiagramId="6ab0999a5a0441749c88871d98a6aaa6" Name="Diagram1" ZoomLevel="89">
         <EntityTypeShape EntityType="CompanyModel.Employee" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CompanyModel.Vacation" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CompanyModel.VacationTypes" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CompanyModel.Admin" Width="1.5" PointX="4.75" PointY="2.375" />
+        <EntityTypeShape EntityType="CompanyModel.Holiday" Width="1.5" PointX="6.625" PointY="1.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
