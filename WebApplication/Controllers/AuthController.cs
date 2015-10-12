@@ -116,7 +116,7 @@ namespace WebApplication.Controllers
                         msg.Body = "Your password is : " + query2;
                         SmtpClient sc = new SmtpClient("smtp.gmail.com");
                         sc.Port = 587;
-                        sc.Credentials = new NetworkCredential("egonul8@gmail.com", "CBR600RR");
+                        sc.Credentials = new NetworkCredential("your@email.com", "yourpassword");
                         sc.EnableSsl = true;
                         sc.Send(msg);
                         ViewBag.mailMessage = "e-mail has been sent. Please check your inbox.";

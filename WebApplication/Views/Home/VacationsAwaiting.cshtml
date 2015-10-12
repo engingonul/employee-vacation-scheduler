@@ -99,7 +99,21 @@
 
                                         })
                                         .success(function(result) {
-                                            alert("Info : Vacation accepted.");
+                                            @if (item.Employee.eligibleDays == 0)
+                                            {
+                                                if ((0 - item.Employee.daysLeft) + item.Vacation.days <= 5)
+                                                {
+                                                    @:alert("Info : Vacation accepted.");
+                                                }
+                                            }
+
+                                            @if (item.Employee.eligibleDays != 0)
+                                            {
+                                                if (item.Employee.daysLeft >= item.Vacation.days)
+                                                {
+                                                    @:alert("Info : Vacation accepted.");
+                                                }
+                                            }
                                         })
                                         .error(function(xhr, status) {
                                             alert(status);
@@ -131,8 +145,9 @@
 
 
 
-            <div id="back-link">
-                @Html.ActionLink("Back", "Index")
-            </div>
-        </div>
+    <div id="back-link" style="float:left">
+        @Html.ActionLink("Back", "Index")
+    </div>
+
+</div>
 

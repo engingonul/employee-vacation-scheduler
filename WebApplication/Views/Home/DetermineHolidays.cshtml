@@ -17,7 +17,7 @@
 
 @using (Html.BeginForm())
 {
-    <table style="float: left; margin: 30px;">
+    <table style="float: left; margin: 30px; width: 100px">
         <tr>
             <td class="col-lg-10">
                 Please select holidays:
@@ -31,11 +31,11 @@
         </tr>
 
         <tr>
-            <td class="col-md-1">
+            <td class="col-md-5">
                 @Html.TextBox("Date", null, new {@class = "datefield", type = "text", @style = "color: black", @placeholder = "Pick Dates"})
             </td>
             <td>
-                <a href="@Url.RouteUrl("DetermineHolidays")" style="text-decoration: none"> Refresh</a>
+                <a href="@Url.RouteUrl("DetermineHolidays")" style="text-decoration: none; margin-left: 0" class="glyphicon glyphicon-refresh"> Refresh</a>
             </td>
         </tr>
 
@@ -52,10 +52,10 @@
 }
 
 <div>
-    <table style="margin: 30px 0 0 500px; border: solid 1px ghostwhite">
+    <table style="margin: 30px 0 0 500px; border: solid 0px ghostwhite; width: 200px;text-align: center">
         <tr>
-            <th class="col-md-5">
-                @Html.DisplayNameFor(model => model.value)
+            <th class="col-md-5" colspan="2">
+                This year and next years holidays :
             </th>
             <th></th>
         </tr>
@@ -66,7 +66,7 @@
                 <td class="col-md-5">
                     @Html.DisplayFor(modelItem => item.value)
                 </td>
-                <td class="col-md-5">
+                <td class="col-md-5" >
                     <a href="@Url.Action("DetermineHolidays")" id="delete@(item.id)">Delete</a>
                     <script>
                         $('#delete@(item.id)').click(function() {

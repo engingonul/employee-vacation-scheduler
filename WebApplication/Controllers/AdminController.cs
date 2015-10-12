@@ -95,7 +95,12 @@ namespace WebApplication.Controllers
                     ModelState.AddModelError("","The username is in use.");
                 }
 
-                
+                if (employee.daysLeft > employee.eligibleDays)
+                {
+                    ModelState.AddModelError("", "'Days left' can not be more than eligible days.");
+                }
+
+
                 if (ModelState.IsValid)
                 {
                     db.Employee.Add(employee);

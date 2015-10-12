@@ -179,26 +179,23 @@ namespace WebApplication.Controllers
 
                 Employee employee = db.Employee.Find(vacation.emp_id);
             
-                //vacation days validation
                 if (vacation.start_date < DateTime.Today.Date || vacation.start_date < DateTime.Today.Date || vacation.start_date > vacation.end_date)
                 {
                     ModelState.AddModelError("", "Invalid vacation dates.");
                 }
 
-                if (employee.daysLeft < vacation.days)
+                
+                if (employee.eligibleDays == 0)
                 {
-                    if (employee.eligibleDays == 0)
-                    {
-                        if (employee.daysLeft > -5)
-                        {
-                            if (vacation.days > 5)
-                                ModelState.AddModelError("", "Freshmen can only take 5 days off.");
-                        }
-                    }
-                    else
-                        ModelState.AddModelError("", "You don't have enough days.");
+                    if((0-employee.daysLeft) + vacation.days > 5)
+                        ModelState.AddModelError("", "Freshmen can only take 5 days off.");
                 }
-
+                else
+                {
+                    if(vacation.days > employee.daysLeft)
+                        ModelState.AddModelError("","You can only take " + employee.daysLeft + " days off.");
+                }
+                
             
                 if (ModelState.IsValid)
                 {
@@ -209,7 +206,7 @@ namespace WebApplication.Controllers
             }
             catch (Exception)
             {
-                ModelState.AddModelError("","Error occured. Please check the info you typed.");
+                ModelState.AddModelError("","Error occured. Please check the info you typed. All fields must be filled.");
             }
             
             return View();
@@ -301,15 +298,44 @@ namespace WebApplication.Controllers
         {
             Vacation vacation = db.Vacation.Find(id);
             Employee employee = db.Employee.Find(vacation.emp_id);
-            
-            db.Entry(vacation).State = EntityState.Modified;
-            vacation.status = "Approved";
-            db.SaveChanges();
 
-            db.Entry(employee).State = EntityState.Modified;
-            employee.eligibleDays = CalcEligibileDays(employee.startDate);
-            employee.daysLeft = employee.daysLeft - vacation.days; 
-            db.SaveChanges();
+            if (employee.eligibleDays != 0)
+            {
+                if (employee.daysLeft >= vacation.days)
+                {
+                    db.Entry(vacation).State = EntityState.Modified;
+                    vacation.status = "Approved";
+                    db.SaveChanges();
+
+                    db.Entry(employee).State = EntityState.Modified;
+                    employee.eligibleDays = CalcEligibileDays(employee.startDate);
+                    employee.daysLeft = employee.daysLeft - vacation.days;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    ModelState.AddModelError("","Employee does not have enough days.");
+                }
+            }
+            else
+            {
+                if (((0-employee.daysLeft) + vacation.days) <= 5)
+                {
+                    db.Entry(vacation).State = EntityState.Modified;
+                    vacation.status = "Approved";
+                    db.SaveChanges();
+
+                    db.Entry(employee).State = EntityState.Modified;
+                    employee.eligibleDays = CalcEligibileDays(employee.startDate);
+                    employee.daysLeft = employee.daysLeft - vacation.days;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Employee does not have enough days.");
+                }
+            }
+            
         }
 
         public void DenyVacation(int id)
@@ -412,12 +438,11 @@ namespace WebApplication.Controllers
             if (User.Identity.IsAuthenticated == false)
                 return RedirectToRoute("login");
 
-           /* var query = from q in db.Holiday
-                where Convert.ToInt32(q.value) > DateTime.Now.Year
-                where Convert.ToInt32(q.value) < DateTime.Now.Year+1
-                select q;*/
+                var query = from q in db.Holiday
+                where q.value.Year >= DateTime.Now.Year
+                select q;
 
-            return View(db.Holiday.ToList());
+            return View(query.ToList());
         }
 
         [HttpPost]
@@ -446,12 +471,11 @@ namespace WebApplication.Controllers
                         db.Holiday.Add(holidays);
                         db.SaveChanges();
                     }
-                    
                 }
-
-                return RedirectToAction("Index");
+                
+                return RedirectToAction("DetermineHolidays");
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 ModelState.AddModelError("","Error occured.");
             }
