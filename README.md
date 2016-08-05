@@ -13,5 +13,5 @@ This README would normally document whatever steps are necessary to get your app
 
 * Forgot Password Module
 
- In order to have this section working properly, default email and password data must be replaced with custom values in WebApplication\Controllers\AuthController.cs (Line 113 - 117 - 119).
+ In order to get this section work properly, default email and password data must be replaced with custom values in WebApplication\Controllers\AuthController.cs (Line 113 - 117 - 119).
  
